@@ -3,16 +3,18 @@
     <style>
       body {
         font-family: Verdana;
-        font-size: 16px;
+        font-sizee: 16px;
       }
     </style>
+    <script type="text/javascript" charset="utf-8" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
     <script>
-      window.onload = function() {
-        alert('loaded');
-      }
+      $(function() {
+        // just a comment
+        $('#hdr').text('jquery loaded!!!');
+      });
     </script>
   </head>
   <body>
-    hello
+    <div id='hdr'></div>
   </body>
 </html>
