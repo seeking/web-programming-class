@@ -1,4 +1,10 @@
 *.m4v
 *.mov
 *.webm
+*.png
+*.jpg
+*.pages
+*.key
+*.jpeg
+*.gif
 .DS_Store
