@@ -1,0 +1,224 @@
+<html>
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<title>jQueryPlay</title>
+	<script src="http://code.jquery.com/jquery-1.7.1.min.js" type="text/javascript" charset="utf-8"></script>
+	<style>
+		body {
+			font-family: Helvetica, Arial;
+		}
+		
+		table {
+			width: 100%;
+		}
+		
+		th {
+			text-align: left;
+			background-color: #333;
+			color: white;
+			padding: 3px;
+			font-size: 16px;
+		}
+		
+		.album td {
+			padding: 3px;
+			vertical-align: top;
+		}
+	
+		.album .thumb img {
+			width: 100px;
+		}
+		
+		.album .title {
+			cursor: pointer;
+		}
+		
+		.album .descr {
+			display: none;
+		}
+		
+		#detailView {
+			position: absolute;
+			top: 0px;
+			width: 500px;
+			height: 300px;
+			padding: 4px;
+			border: 2px solid #004080;
+			border-top: none;
+			border-radius: 0px 0px 4px 4px;
+			box-shadow: 10px 10px 5px #888;
+			background-color: #eee;
+		}
+		
+		#detailView img.cover {
+			width: 250px;
+			float: left;
+		}
+		
+		#detailView button.close {
+			position: absolute;
+			right: 0px; bottom: 0px;
+			margin: 4px;
+		}
+		#detailView .info {
+			margin-left: 5px;
+			width: 240px;
+			height: 250px;
+			overflow-y: auto;
+			float: left;
+		}
+		
+		#detailViewCont {
+			position: fixed;
+			top: 0px; left: 0px; bottom: 0px; right: 0px;
+			background-color: rgba(255,255,255,0.5);
+			display: none;
+		}
+		
+		
+		
+	</style>
+	<script type="text/javascript" charset="utf-8">
+	
+		jQuery.fn.center = function () {
+		    this.css("position","absolute");
+		    this.css("left", (($(window).width() - this.outerWidth()) / 2) + $(window).scrollLeft() + "px");
+		    return this;
+		}
+	
+	
+		$(function() { // the below runs when the DOM has been loaded and jQuery is ready
+			
+			$('.album .title').mouseover(function() {
+				var imgUrl = $(this).closest('tr.album').find('.thumb img').attr('src');
+				$('#detailView img.cover').attr('src',imgUrl);
+				var title = $(this).closest('tr.album').find('.title').text();
+				$('#detailView .title').text(title);
+				var descr = $(this).closest('tr.album').find('.descr').text();
+				$('#detailView .descr').text(descr);
+			});
+			
+			$('.album .title').click(function() {
+				$('#detailViewCont').show();
+				$('#detailView').center();
+			});
+			
+			$('#detailView button.close').click(function() {
+				$('#detailViewCont').hide();
+			});
+			
+			$(window).resize(function() {
+				$('#detailView').center();
+			});
+			
+		
+		});
+		
+	</script>
+</head>
+<body>
+	<table>
+		<thead>
+			<th class='thumb'>cover</th>
+			<th class='artist'>artist</td>
+			<th class='title'>info</td>
+			<th class='year'>year</td>
+			<th class='tools'></td>
+		</thead>
+		<tbody>
+			<tr class='album'>
+				<td class='thumb'><img class='thumb' src='http://upload.wikimedia.org/wikipedia/en/thumb/9/9c/MilesDavisKindofBlue.jpg/220px-MilesDavisKindofBlue.jpg'/></td>
+				<td class='artist'>Miles Davis</td>
+				<td class='info'>
+						<h3 class='title'>Kind of Blue</h3>
+						<p class='descr'>Kind of Blue is a studio album by American jazz musician Miles Davis, released August 17, 1959, on Columbia Records in the United States. Recording sessions for the album took place at Columbia's 30th Street Studio in New York City on March 2 and April 22, 1959. The album's influence on music, including jazz, rock, and classical music, has led music writers to acknowledge it as one of the most influential albums ever made.</p>
+				</td>
+				<td class='year'>1959</td>
+				<td class='tools'><button>play</button></td>
+			</tr>
+			<tr class='album'>
+				<td class='thumb'><img src='http://upload.wikimedia.org/wikipedia/en/thumb/5/5f/Pjharveyletenglandshake.jpg/220px-Pjharveyletenglandshake.jpg'/></td>
+				<td class='artist'>PJ Harvey</td>
+				<td class='info'>
+						<h3 class='title'>Let England Shake</h3>
+						<p class='descr'>Let England Shake is the tenth studio album by PJ Harvey, released on 11 February 2011 in the UK. Work on it began around the time of White Chalk's release in 2007, though it is a departure from the piano-driven introspection of that album. The album was written over a period of two-and-a-half years, and recorded in a five-week period at a church in Dorset in April and May 2010.</p>
+				</td>
+				<td class='year'>2011</td>
+				<td class='tools'><button fileName=''>play</button></td>
+			</tr>
+			<tr class='album' data-genres=''>
+				<td class='thumb'><img class='thumb' src='http://upload.wikimedia.org/wikipedia/en/thumb/e/e9/Sufjanstevensageofadz.jpg/220px-Sufjanstevensageofadz.jpg'/></td>
+				<td class='artist'>Sufjan Stevens</td>
+				<td class='info'>
+					<h3 class='title info'>Age of Adz</h3>
+					<p class='descr info'>The Age of Adz (pronounced /ˈɑːdz/)[1] is a 2010 album by American indie folk songwriter Sufjan Stevens, released on October 12, 2010 by Asthmatic Kitty Records. It is Stevens' sixth studio album and his first song-based full length album in five years, since the release of Illinois in 2005. The album features a heavy use of electronics augmented by heavy orchestration, and takes inspiration from the apocalyptic artwork of schizophrenic artist Royal Robertson.</p>
+				</td>
+				<td class='year'>2010</td>
+				<td class='tools'><button>play</button></td>
+			</tr>
+			<tr class='album'>
+				<td class='thumb'><img class='thumb' src='http://upload.wikimedia.org/wikipedia/en/thumb/9/93/Thelonious_Himself_cover.jpg/220px-Thelonious_Himself_cover.jpg'/></td>
+				<td class='artist'>Thelonious Monk</td>
+				<td class='info'>
+					<h3 class='title info'>Thelonious Monk Himself</h3>
+					<p class='descr info'>Thelonious Himself is a 1957 album by Thelonious Monk and his first to consist of exclusively solo material including "'Round Midnight", Monk's most famous composition. The original CD reissue includes a revelatory 22 minutes of "'Round Midnight" outtakes, ideas, and development.</p>
+				</td>
+				<td class='year'>1959</td>
+				<td class='tools'><button>play</button></td>
+			</tr>
+			<tr class='album'>
+				<td class='thumb'><img class='thumb' src='http://upload.wikimedia.org/wikipedia/en/6/68/Deadcandance_spiritchaser_cover.jpg'/></td>
+				<td class='artist'>Dead Can Dance</td>
+				<td class='info'>
+					<h3 class='title info'>Spirit Chaser</h3>
+					<p class='descr info'>Spiritchaser is the seventh studio album by Dead Can Dance before Brendan Perry and Lisa Gerrard went their separate ways. It expands on its exploration of world music and like Into the Labyrinth, Spiritchaser was recorded at Quivvy Church, Perry's personal studio in Ireland. The track "Indus" contains a melody that is very similar to the melody of "Within You Without You," a Beatles song that George Harrison composed with Indian musicians. Although not deliberate, Perry and Gerrard were asked to contact Harrison for his permission to use it; he granted it, but the record company insisted that they give him partial songwriting credit for it.</p>
+				</td>
+				<td class='year'>1996</td>
+				<td class='tools'><button>play</button></td>
+			</tr>
+			<tr class='album'>
+				<td class='thumb'><img class='thumb' src='http://upload.wikimedia.org/wikipedia/en/0/0a/RiotOnAnEmptyStreet.jpg'/></td>
+				<td class='artist'>Kings of Convenience</td>
+				<td class='info'>
+					<h3 class='title info'>Riot on an Empty Street</h3>
+					<p class='descr info'>Riot on an Empty Street is the second album from Norwegian duo Kings of Convenience. It features two song collaborations with Canadian musician Feist. It peaked at #2 in Norway, #3 in Italy (staying in the chart for a year) and #49 in the UK.</p>
+				</td>
+				<td class='year'>2004</td>
+				<td class='tools'><button>play</button></td>
+			</tr>
+			<tr class='album'>
+				<td class='thumb'><img class='thumb' src='http://www.progarchives.com/progressive_rock_discography_covers/364/cover_2530151082009.jpg'/></td>
+				<td class='artist'>Pink Floyd</td>
+				<td class='info'>
+					<h3 class='title info'>The Wall</h3>
+					<p class='descr info'>The Wall is the eleventh studio album by English progressive rock group Pink Floyd. Released as a double album on 30 November 1979, it was subsequently performed live with elaborate theatrical effects, and adapted into a feature film, Pink Floyd—The Wall.</p>
+				</td>
+				<td class='year'>1979</td>
+				<td class='tools'><button>play</button></td>
+			</tr>
+			<tr class='album'>
+				<td class='thumb'><img class='thumb' src='http://upload.wikimedia.org/wikipedia/en/thumb/b/bf/Tomboy2011Album.jpg/220px-Tomboy2011Album.jpg'/></td>
+				<td class='artist'>Panda Bear</td>
+				<td class='info'>
+					<h3 class='title info'>Tom Boy</h3>
+					<p class='descr info'>Tomboy is the fourth solo album by Animal Collective member Noah Lennox (stage name Panda Bear). </p>
+				</td>
+				<td class='year'>2011</td>
+				<td class='tools'><button>play</button></td>
+			</tr>
+		</tbody>
+	</table>
+	
+	<div id='detailViewCont'>
+		<div id='detailView'>
+			<button class='close'>close</button>
+			<img class='cover' src=''/>
+			<div class='info'>
+				<h2 class='title'></h2>
+				<div class='descr'></div>
+			</div>
+		</div>
+	</div>
+	
+</body>
+</html>

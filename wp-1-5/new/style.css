@@ -1,0 +1,41 @@
+body {
+	font-family: Helvetica, Arial;
+}
+
+th {
+	text-align: left;
+	background-color: #333;
+	color: white;
+	padding: 3px;
+	font-size: 16px;
+}
+
+td {
+	padding: 3px;
+}
+
+.thumb img {
+	width: 100px;
+}
+
+.title {
+	cursor: pointer;
+}
+
+.descr {
+	display: none;
+}
+
+#detailView {
+	position: fixed;
+	top: 10px; left: 10px;
+	background-color: white;
+	border: 1px solid black;
+	display: none;
+}
+
+#detailView .close {
+	position: absolute;
+	right: 0px; top: 0px;
+	margin: 2px;
+}

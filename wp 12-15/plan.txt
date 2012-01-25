@@ -1,0 +1,16 @@
+12-15 plan
+
+learning goals:
+	- learn to use jQuery selectors to grab DOM elements
+	- learn to use methods of a jQuery object:
+			- show / hide / toggle
+			- set and retrieve attributes of tags
+			- addClass/removeClass/toggleClass
+			- set and retrieve html/text
+			- 
+
+project goals:
+	- show a detail button when user hovers over an album
+	- make a pop-up detail box for the album showing description
+	- 
+

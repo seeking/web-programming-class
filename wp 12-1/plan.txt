@@ -1,0 +1,17 @@
+12-1 class plan
+
+1. quickly go over old code
+2. explain goals for today
+3. use getEl function to extend elements to get select menu values
+4. add empty select menus in HTML
+5. how to add options??? by hand?? no way!
+6. use getEl to extend elements to add an option to a select: addOption method
+7. play with date object -> getMonth, getDate methods
+8. use getEl function to extend select elements for adding months
+		create array
+		use loop to add options
+9. use getEL function to extend select elements for adding dates (31 first)
+10. what about months with less than 31?
+11. change addDates method to add dates based on the month passed to it
+12. add event listener to the month menu to update the dates menu
+
