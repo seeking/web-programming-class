@@ -1,0 +1,29 @@
+12-8 plan
+
+project goals:
+	- finish the interactive date-select menu
+	- write a function to figure out if a date is today or before today
+	- use the above info to show the right year born
+	
+learning goals:
+	- practice logical operators
+	- practice event triggers with the onchange event
+	- introduce jQuery
+	- learn how jQuery works and get comfortable with it 
+			- $.val()
+			- $.show() / $.hide() / $.toggle()
+			- $.bind() - mouseover, click, change
+	
+1. write onchange event to fill the right dates
+2. write the function to compare dates
+3. get rid of the old select menu and replace the functionality with the new one
+4. talk about getEl ----> introduce jQuery
+5. visit jQuery website, show docs
+6. open html file with album data
+7. insert script tag to include jquery
+8. style the table a little bit with CSS
+9. make the table interactive:
+	- show/hide columns
+	-	show/hide descriptions
+	- popup box for descriptions
+

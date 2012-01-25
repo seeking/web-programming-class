@@ -1,0 +1,113 @@
+<html>
+<head>
+	<title>twitter</title>
+
+	<style type="text/css">
+		div.tweet {
+		    border: 1px solid #eee;
+		    padding: 4px;
+		    display: none;
+		}
+
+		.sBar {
+		    padding: 5px;
+		    background-color: red;
+		}
+
+		.user {
+		    font-weight: bold;
+		}
+
+		img {
+		    float: left;
+		    clear: both;
+		}
+	</style>
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+	<script type="text/javascript">
+
+		tweetModel = {
+		    urlT: 'http://search.twitter.com/search.json?q={search}&rpp=5&include_entities=true&result_type=mixed&callback=?',
+		        
+		    tweets: {},
+
+		    searchTerm: 'mccallie',
+		    
+		    init: function(view) {
+		    		this.view = view;
+		        this.setEvents();
+		    },
+		    
+		    setEvents: function() {
+		        var th = this;
+		        setInterval(function() {
+		            th.getNewTweets();
+		        },1000);
+		    },
+		    
+		    setNewSearch: function(st) {
+		        this.searchTerm = st;
+		        console.log('setting new search term',this.searchTerm);
+		    },
+		    
+		    getNewTweets: function() {
+		        console.log('getting tweets: '+this.searchTerm);
+		        var th = this;
+		        var url = this.urlT.replace("{search}",this.searchTerm);
+		        console.log(this.urlT);
+		        console.log('new url '+url);
+		        $.getJSON(url, function(data) {
+		            data.results.forEach(function(item) {
+		                if (!th.tweets[item.id]) {
+		                    th.tweets[item.id] = item;
+		                    th.view.addTweet(item);
+		                }
+		            });
+		        });
+		    }
+		    
+		}
+
+		tweetView = {
+		    el: '#tweetView',
+		    
+		    init: function(model) {
+		        this.model = model;
+		        this.setEvents();
+		    },
+		    
+		    addTweet: function(item) {
+		        console.log('adding Tweet',item);
+		        var twDiv = $('<div/>').addClass('tweet').addClass('t'+item.id);
+		        $('<img />').attr('src',item['profile_image_url']).appendTo(twDiv);
+		        var txt = $('<div/>').addClass('content').appendTo(twDiv);
+		        $('<div/>').addClass('e').text(item.id).appendTo(txt);
+		        $('<div/>').addClass('user').text(item['from_user_name']).appendTo(txt);
+		        $('<div/>').addClass('msg').text(item.text).appendTo(txt);
+		        twDiv.prependTo($(this.el).find('.tweets')).fadeIn();
+		    },
+		    
+		    setEvents: function() {
+		        var th = this;
+		        $(this.el).find('input.search').change(function() {
+		            console.log('new search');
+		            th.model.setNewSearch($(this).val());
+		        });
+		    }
+		}
+
+		$(function() {
+		    tweetModel.init(tweetView);
+		    tweetView.init(tweetModel);
+		});
+
+	</script>
+</head>
+<body>
+	<div id='tweetView'>
+		<div class='sBar'>search tweets for: <input placeholder='search' class='search'/> (hit return)</div>
+		<div class='tweets'>
+		</div>
+	</div>
+</body>
+</html>

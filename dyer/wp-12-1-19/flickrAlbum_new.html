@@ -1,0 +1,204 @@
+<html>
+	<head>
+		<style type="text/css" media="screen">
+			.current {
+			    width: 100%;
+			}
+
+			.current img {
+			}
+
+			button.next {
+			    float: right;
+			}
+
+			.thumbs {
+			    width: 100%;
+			    height: 60px;
+			    white-space: nowrap;
+			    overflow-x: auto;
+			}
+
+			.thumbs img {
+			    height: 50px;
+			    display: inline-block;
+			    cursor: pointer;
+			    opacity: 0.8;
+			    margin: 2px;
+			    border: 3px solid transparent;
+			}
+
+			.thumbs img:hover {
+			    opacity: 1;
+			    border-color: blue;
+			}
+			
+			.thumbs img.selected {
+					opacity: 1;
+					border-color: black;
+			}
+
+			input.search {
+				width: 100%;
+				font-size: 24px;
+			}
+		</style>
+
+		<script src="http://code.jquery.com/jquery-1.7.1.min.js" type="text/javascript" charset="utf-8"></script>
+
+		<script type="text/javascript" charset="utf-8">
+
+			var albumView = {
+
+			    photos: [], 			// < an array to hold the photo items retrieved from Flickr
+
+			    currentPhoto: 0, 	// < a placeholder for the photo shown
+
+
+					// an initialization function for the object
+			    init: function(rootEl, flickrM) {
+
+			        this.el = $(rootEl);			// < set the root DOM element of the photo album as a property			        
+			        this.flickrM = flickrM;  // set the passed-in flickr Model to an object property
+			        this.photos = [];
+			        this.setEvents(); 				// < start up the event listeners
+			        this.newSearch();
+
+			    },
+
+					// a method to start up the event listeners on the buttons
+			    setEvents: function() {
+
+			        // make another reference to this obj for the jq element scope
+			        var thisAlbum = this;
+
+			        this.el.find('.next').click(function() {
+			          thisAlbum.showNext();
+			        });
+
+			        this.el.find('.prev').click(function() {
+			          thisAlbum.showPrev();
+			        });
+
+			        this.el.find('input.search').change(function() {
+			        	thisAlbum.newSearch($(this).val());
+			        });
+			    },
+
+
+					// add the thumbnails to the thumbs container
+			    showThumbs: function() {
+			        var thumbsCont = this.el.find('.thumbs');
+			        thumbsCont.find('img').remove();
+			        var thisAlbum = this;
+			        this.photos.forEach(function(ph,index) {
+			           var smallUrl = ph.media.m.replace('_m','_t');
+			           $('<img/>')
+			               .attr('src',smallUrl)
+			               .appendTo(thumbsCont)
+			               .click(function() {
+			                   thisAlbum.showPhoto(index);
+			               });
+			        });
+			    },
+
+					// show the photo passed, or the current photo if i is not defined
+			    showPhoto: function(i) {
+			        if (typeof(i) != 'undefined' && i != null) this.currentPhoto = i; // < the safest way to check i
+			        
+							this.el.find('.current img').fadeOut().remove();
+			        $('<img />')
+			                .attr('src',this.photos[this.currentPhoto].media.m.replace('_m','_z'))
+			                .css('display','none')
+			                .appendTo(this.el.find('.current'))
+			                .fadeIn();
+			
+							// I added the part below to indicate the current photo in the thumbnail list 
+							// Do you understand how it works?
+							this.el.find('.thumbs img').removeClass('selected');
+							$(this.el.find('.thumbs img')[this.currentPhoto]).addClass('selected');
+			    },
+
+					// increment currentPhoto and use showPhoto to show it
+			    showNext: function() {
+			        if (this.currentPhoto == (this.photos.length - 1)) {
+			            this.currentPhoto = -1;
+			        }
+							// ++this.currentPhoto increments it FIRST, then passes it...
+			        this.showPhoto(++this.currentPhoto);
+			    },
+
+					// decrement currentPhoto and use showPhoto to show it
+			    showPrev: function() {
+			        if (this.currentPhoto == 0) {
+			            this.currentPhoto = (this.photos.length);
+			        }
+			        this.showPhoto(--this.currentPhoto);
+			    },
+
+			    newSearch: function() {
+			    	var th = this; // to access this scope
+			        this.flickrM.getNewPhotos(this.el.find('input.search').val(),function(data) {
+			        	th.photos = data;
+			        	th.showThumbs(); 				// < fill up the thumbnail list
+			        	th.showPhoto();					// < show the current photo (default is the first)
+			      });
+			    }
+			}
+
+
+			// flickr Model
+			flickrModel = {
+
+				baseUrl: 'http://api.flickr.com/services/feeds/photos_public.gne?format=json&jsoncallback=?',
+				photos: [],
+				tags: 'mccallie',
+
+				init: function(tags) {
+					setNewTags(tags);
+				},
+
+				setNewTags: function(tags) {
+					if (typeof(tags) != 'undefined' && tags != null)  {
+						this.tags = tags;
+					}
+					this.url = this.baseUrl+'&tags='+this.tags
+				},
+
+				getNewPhotos: function(tags,cb) {
+					this.setNewTags(tags);
+					
+					$.getJSON(this.url, function(data) {
+						console.log(data);
+						this.photos = data.items;
+						cb(this.photos);
+					});
+
+					
+				}
+
+			}
+					
+			$(function() {
+				albumView.init('#albumView',flickrModel);
+			});
+
+
+		</script>
+
+	</head>
+
+	<body>
+		<!-- the album container -->
+		<div id="albumView">
+				<input type='text' class="search" placeholder='search'/>
+		    <div class="thumbs"></div>
+		    <button class="prev">prev</button>
+		    <button class="next">next</button>
+		    <div class="current"></div>
+		</div>
+
+
+	</body>
+
+</html>

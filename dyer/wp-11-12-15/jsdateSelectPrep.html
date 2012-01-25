@@ -1,0 +1,186 @@
+<html>
+	<head>
+		<style type="text/css" media="screen">
+			label {
+				width: 160px;
+				text-align: right;
+				font-weight: bold;
+			}
+			
+			input, label {
+				margin: 6px;
+			}
+			
+			#goBtn {
+				margin-left: 160px;
+				display: none;
+			}
+			
+			#messageCont {
+				display: none;
+			}
+			
+			#message {
+				font-size: 24px;
+				font-weight: bold;
+				padding: 10px;
+				
+			}
+			
+			.invalid {
+				border-color: red;
+			}
+			
+			.valid {
+				border-color: green;
+			}
+		</style>
+		<script src="http://code.jquery.com/jquery-1.7.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" charset="utf-8">
+			
+			var theMonths = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+			var daysInMonth = [31,29,31,30,31,30,31,31,30,31,30,31];
+			
+			// function to get the an element given its id
+			function getEl(id) {
+				var el = document.getElementById(id);
+					
+				el.val = function() {
+					if (this.tagName == 'select') {
+						return this.options[this.selectedIndex].value;
+					} else {
+						return this.value;
+					}
+				}
+				
+				el.addOption = function(txt,val) {
+					var newOpt = document.createElement('option');
+					newOpt.innerText = txt;
+					newOpt.value = val;
+					this.appendChild(newOpt);
+				}
+				
+				el.fillMonths = function() {
+					this.options.length = 0;
+					for (i=0;i<12;i++) {
+						this.addOption(theMonths[i],i);
+					}
+				}
+				
+				el.fillDates = function(m) {
+					this.options.length = 0;
+					for (i=1;i<=daysInMonth[m];i++) {
+						this.addOption(i,i);
+					}
+				}
+				
+				return el;
+			}			
+			
+			// function to calculate and return the year someone was born given age
+			// and whether they've celebrated their birthday	
+			function getYearBorn(age,celebrated) {
+				if (celebrated) {
+					return 2011 - age;
+				} else {
+					return 2010 - age;
+				}
+			}
+			
+			// function to show the 'go' button ONLY if both of the fields are valid
+			function maybeShowBtn() {
+				if (getEl('name').className == 'valid' && getEl('age').className == 'valid') {
+					getEl('goBtn').style.display = 'block';
+				}
+			}
+			
+			// function to determine if a given date (month,date) is on or before today
+			function isTodayOrBefore(m,d) {
+				var today = new Date();
+				var tm = today.getMonth();
+				var td = today.getDate();
+				return ((tm > m) || (tm == m && td >= d));
+			}
+
+			// all non-function-encapsulated code that references the DOM must be run
+			// AFTER the DOM loads, that is, once the window's onload event is triggered:
+			window.onload = function() {
+				
+				//getEl('bdMonth').fillMonths();
+				//getEl('bdDate').fillDates(0);
+				
+				// when the birth month select menu changes,
+				// reset the birth date menu with the correct number of days
+				$('#bdMonth').bind(function() {
+					$('#bdDate').fillDates($('#bdMonth').val());
+				});
+				
+				// when the 'name' text input is focused, get rid of the prompt
+				$('name').bind = function() {
+					if (this.value == 'type your name') {
+						this.value = '';
+					}
+				}
+				
+				// when the 'age' text input is focused, get rid of the prompt
+				getEl('age').onfocus = function() {
+					if (this.value == 'type your age') {
+						this.value = '';
+					}
+				}
+				
+				// when the 'name' text input is exited, check the value
+				// mark as valid or invalid
+				getEl('name').onblur = function() {
+					this.className = (this.value == '')?'invalid':'valid';
+					maybeShowBtn();
+				}
+				
+				// when the 'age' text input is exited, check the value
+				// mark as valid or invalid
+				getEl('age').onblur = function() {
+					this.className = (this.value > 0)?'valid':'invalid';
+					maybeShowBtn();
+				}
+				
+				// when the 'go' button is clicked,
+				// insert the appropriate values in the DOM elements,
+				// then toggle the visibility of the questions and message blocks
+				getEl('goBtn').onclick = function() {
+					var nm = getEl('name').val();
+					var age = getEl('age').val();
+					
+					var bdMonth = getEl('bdMonth').val();
+					var bdDate = getEl('bdDate').val();
+					
+					var cbVal = isTodayOrBefore(bdMonth,bdDate);
+										
+					var yr = getYearBorn(age,cbVal);
+					
+					getEl('dispName').innerText = nm;
+					getEl('dispYear').innerText = yr;
+					getEl('history').href = 'http://en.wikipedia.org/wiki/'+yr;
+					getEl('questions').style.display = 'none';
+					getEl('messageCont').style.display = 'block';
+					
+				}
+				
+			}
+			
+		</script>
+	</head>
+	<body>
+		<div id='questions'>
+			<label>name:</label><input type='text' id='name' class="empty" value='type your name'/><br/>
+			<label>age:</label><input type='text' id='age' class="empty" value='type your age'><br/>
+			<label>birthdate:</label><select id='bdMonth'></select><select id='bdDate'></select><br/>
+			
+			<br/>
+			<button id='goBtn'>go</button>
+		</div>
+		<div id='messageCont'>
+			<div id='message'>Hello, <span id='dispName'></span>! You were born in <span id='dispYear'></span>.</div>
+			<a id='history' href=''>What happened the year you were born?</a>
+		</div>
+	</body>
+</html>
