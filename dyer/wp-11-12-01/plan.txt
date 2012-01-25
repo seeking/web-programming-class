@@ -14,4 +14,5 @@
 9. use getEL function to extend select elements for adding dates (31 first)
 10. what about months with less than 31?
 11. change addDates method to add dates based on the month passed to it
-12. add event listener to the month menu to update 
+12. add event listener to the month menu to update the dates menu
+
