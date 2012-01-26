@@ -1,0 +1,18 @@
+
+learning goals:
+---------------
+    - what is github / a code repository?
+        - basic git commands/terms: git clone, pull, add, commit, push
+    - what is an IDE? Cloud9
+    - how to get JSON from Google Spreadsheet feed
+    - practice coding with
+        - jQuery
+        - objects
+
+
+project goals:
+--------------
+    - make a Google Spreadsheet
+    - put some interesting data in it
+    - get the JSON feed - cell feed
+    - display the contents on a webpage
