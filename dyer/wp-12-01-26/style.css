@@ -1,0 +1,21 @@
+@import url(http://fonts.googleapis.com/css?family=Oldenburg);
+
+body {
+  font-family: 'OldenBurg',Helvetica, Arial;
+}
+
+table {
+  border: 1px solid black;
+  border-collapse:collapse;
+}
+
+td, th {
+  border: 1px solid black;
+  text-align: left;
+  padding: 3px;
+}
+
+th {
+  background-color: #333;
+  color: white;
+}
