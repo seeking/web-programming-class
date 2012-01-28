@@ -1,4 +1,3 @@
-//hello
 
 var spreadSheetModelMaker = {
   baseUrl: 'http://spreadsheets.google.com/feeds/cells/{id}/od6/public/values?alt=json-in-script&callback=?',
@@ -18,7 +17,7 @@ var spreadSheetModelMaker = {
   getDataClass: function(cb) {
     var th = this;
     $.getJSON(this.url,function(json) {
-      console.log(json);
+      // console.log(json);
       th.jsonObj = json;
       th.props = [];
       th.entries = [];

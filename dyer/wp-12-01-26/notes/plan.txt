@@ -1,7 +1,7 @@
 
 learning goals:
 ---------------
-    - what is github / a code repository?
+    - what is github / a code repository
         - basic git commands/terms: git clone, pull, add, commit, push
     - what is an IDE? Cloud9. get familiar with it.
     - how to get JSON from Google Spreadsheet feed
