@@ -3,7 +3,7 @@ learning goals:
 ---------------
     - what is github / a code repository?
         - basic git commands/terms: git clone, pull, add, commit, push
-    - what is an IDE? Cloud9
+    - what is an IDE? Cloud9. get familiar with it.
     - how to get JSON from Google Spreadsheet feed
     - practice coding with
         - jQuery
@@ -16,3 +16,26 @@ project goals:
     - put some interesting data in it
     - get the JSON feed - cell feed
     - display the contents on a webpage
+
+
+steps:
+------
+  - briefly describe what version control / code repo is
+  - outline: local copy, repo, branches, staging copy
+  - show processes: clone, pull, add, commit, push
+  - explain IDEs
+  - get everyone signed up for GitHub
+  - get everyone added as collabs to the web-prog project
+  - show them around Cloud9 IDE
+  - show how to get json feed from Google Spreadsheets
+      - analyze the json
+  - start coding:
+      - spreadsheet Model to retrieve and reorganize the data
+          - make the url from spreadsheet id
+          - get the JSON data
+          - cycle through the data - make a properties array of strs and a rows array of objects
+          - callback when all is done
+      - pass model to a table view to render and show the table
+
+
+

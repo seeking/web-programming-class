@@ -1,17 +1,51 @@
+//hello
 
-window.spreadSheetModelMaker = {
+var spreadSheetModelMaker = {
   baseUrl: 'http://spreadsheets.google.com/feeds/cells/{id}/od6/public/values?alt=json-in-script&callback=?',
   
   init: function(ssId,cb) {
     this.ssId = ssId;
     this.url = this.baseUrl.replace('{id}',this.ssId);
     var th = this;
-    this.getData(function() {
+    this.getDataClass(function() {
       cb(th);
     });
     
   },
   
+  // here is the algorithm for processing the JSON of cells
+  // that we came up with in class...
+  getDataClass: function(cb) {
+    var th = this;
+    $.getJSON(this.url,function(json) {
+      console.log(json);
+      th.jsonObj = json;
+      th.props = [];
+      th.entries = [];
+      var entryObj; // helper object
+      th.jsonObj.feed.entry.forEach(function(obj) {
+        var row = parseInt(obj.gs$cell.row);
+        var col = parseInt(obj.gs$cell.col);
+        var val= obj.gs$cell.$t;
+        if (row==1) {
+          th.props.push(val);
+        } else {
+          if (col == 1) {
+            entryObj = {};
+          }
+          var propName = th.props[col-1];
+          entryObj[propName] = val;
+          if (col == th.props.length) {
+            th.entries.push(entryObj);
+          }
+        }
+      });
+      cb();
+    });
+  },
+  
+  // here is a slightly more efficient algorithm that 
+  // I had made before class...
   getData: function(cb) {
     var th = this;
     $.getJSON(this.url,function(json) {
@@ -27,9 +61,16 @@ window.spreadSheetModelMaker = {
         if (row == -1) {
           th.props[col] = val; // or th.props.push(val);
         } else {
-          if (!th.entries[row]) {
+          // instead of checking the col, just check if the object
+          // for that row doesn't exists yet:
+          if (!th.entries[row]) { 
+            // I make the object directly inside the array 
+            // instead of using a helper object
             th.entries[row] = {};
           }
+          // instead of waiting to push a helper obj
+          // onto the array at the last column,
+          // here I directly set it in the array
           th.entries[row][th.props[col]] = val;
         }
       });
@@ -39,7 +80,7 @@ window.spreadSheetModelMaker = {
   
 };
 
-window.tableView = {
+var tableView = {
   
   rootEl: $('<table><thead></thead><tbody></tbody></table>'),
   
@@ -76,13 +117,12 @@ window.tableView = {
     return this;
   }
   
-  
 };
 
 $(function() {
     
-  window.spreadSheetModelMaker.init('0AjiIacAWc-aRdHZ6Uk1MOFlXdHpvY2UtN1ZNQ0xTZ0E',function(m) {
-    window.tableView.init(m).render().open();
+  spreadSheetModelMaker.init('0AjiIacAWc-aRdHZ6Uk1MOFlXdHpvY2UtN1ZNQ0xTZ0E',function(m) {
+    tableView.init(m).render().open();
     $('#loading').hide();
   });
   
