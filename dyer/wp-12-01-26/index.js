@@ -1,13 +1,25 @@
 
 var spreadSheetModelMaker = {
+  // this is a url template in which we can just replace {id}
+  // with the id of the google spreadsheet!
   baseUrl: 'http://spreadsheets.google.com/feeds/cells/{id}/od6/public/values?alt=json-in-script&callback=?',
   
   init: function(ssId,cb) {
+    //                ^ cb represents the callback function that I
+    //                want to be called only once all the data has
+    //                been received and processed
+
     this.ssId = ssId;
     this.url = this.baseUrl.replace('{id}',this.ssId);
     var th = this;
+
+    // below I call the algorithm that we came up with in class,
+    // which I coded in the method getDataClass.
+    // you can instead use the algorithm I came up with simply by calling
+    // the method getData instead...
+
     this.getDataClass(function() {
-      cb(th);
+      cb(th); // here's where the callback is called, and is passed the whole object
     });
     
   },
@@ -79,6 +91,9 @@ var spreadSheetModelMaker = {
   
 };
 
+
+// my object that represents the table in the browser
+
 var tableView = {
   
   rootEl: $('<table><thead></thead><tbody></tbody></table>'),
@@ -94,35 +109,4 @@ var tableView = {
     th.model.props.forEach(function(hc) {
       $('<th/>').text(hc).appendTo(hrEl);
     });
-    hrEl.appendTo(th.rootEl.find('thead'));
-    
-    th.model.entries.forEach(function(entry) {
-      var rowEl = $('<tr/>');
-      th.model.props.forEach(function(prop) {
-        $('<td/>').text(entry[prop]).appendTo(rowEl);
-      });
-      rowEl.appendTo(th.rootEl.find('tbody'));
-    });
-    return this;
-  },
-  
-  open: function() {
-    this.rootEl.appendTo('body');
-    return this;
-  },
-  
-  close: function() {
-    this.rootEl.remove();
-    return this;
-  }
-  
-};
-
-$(function() {
-    
-  spreadSheetModelMaker.init('0AjiIacAWc-aRdHZ6Uk1MOFlXdHpvY2UtN1ZNQ0xTZ0E',function(m) {
-    tableView.init(m).render().open();
-    $('#loading').hide();
-  });
-  
-});
+    hrEl.appen
