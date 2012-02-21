@@ -109,4 +109,40 @@ var tableView = {
     th.model.props.forEach(function(hc) {
       $('<th/>').text(hc).appendTo(hrEl);
     });
-    hrEl.appen
+    hrEl.appendTo(th.rootEl.find('thead'));
+    
+    th.model.entries.forEach(function(entry) {
+      var rowEl = $('<tr/>');
+      th.model.props.forEach(function(prop) {
+        $('<td/>').text(entry[prop]).appendTo(rowEl);
+      });
+      rowEl.appendTo(th.rootEl.find('tbody'));
+    });
+    return this;
+  },
+  
+  open: function() {
+    this.rootEl.appendTo('body');
+    return this;
+  },
+  
+  close: function() {
+    this.rootEl.remove();
+    return this;
+  }
+  
+};
+
+$(function() {
+    
+  spreadSheetModelMaker.init('0AjiIacAWc-aRdHZ6Uk1MOFlXdHpvY2UtN1ZNQ0xTZ0E',function(m) {
+    // as soon as the init function finishes and calls this callback,
+    //  I pass the data object to my tableView object.
+    // However, YOU could do something else instead! 
+
+    tableView.init(m).render().open();
+
+    $('#loading').hide();
+  });
+  
+});

@@ -1,0 +1,97 @@
+<html>
+  <head>
+    <style type="text/css" media="screen">
+      .row {
+        clear: both;
+        padding: 4px;
+      }
+      .colored {
+        width : 20px;
+        background-color : black; /* color is for fonts/lines */
+        float : left;
+        height : 30px;
+      }
+      .category {
+        height : 30px;
+        min-width: 120px;
+        float: left;
+      } 
+  </style>
+
+  <script type='text/javascript' src='http://code.jquery.com/jquery-1.7.1.min.js'></script>
+  <script type = 'text/javascript'>
+    $(function(){
+        console.log('hi');
+        // you forgot the callback on the end of the url: callback=?, so the function
+        // that is the second argument of $.getJSON was never getting called!
+        url = 'https://spreadsheets.google.com/feeds/cells/0AtbI5ozDj9aJdEhSOUdQVFdraVFMdlBqYlNmVU1wSGc/od6/public/values?hl=en_US&alt=json-in-script&callback=?';
+        $.getJSON(url, function(data){
+            console.log(data);
+            useData.init(data);
+        });
+    });
+
+    var useData = {
+     
+      init : function(data){
+
+        this.json = data; 
+        // ^ need to assign json as a property 
+        // if you want to access it inside other methods
+        this.format();
+        this.buildDivs();
+      },
+     
+      format : function(){
+        var th = this;
+        th.categories = [];
+        th.values = [];
+        th.json.feed.entry.forEach(function(obj){
+      // ^ access json property you set above
+          
+          var col = obj.gs$cell.col  // where are col(), val() and row below coming from?
+          var row = obj.gs$cell.row  // they are not pre-existing methods of obj, so
+          var val = obj.gs$cell.$t  // you need to analyze the json that comes back from Google and set them
+          
+          if(col == 1){  
+             th.categories[row - 1] = val; // reference categories and values as properties of this
+          } else {
+             th.values[row - 1] = val;
+          }
+        });
+      },
+         
+      buildDivs : function(){
+        var th = this;
+        var i = 0;
+        var graph = $('.graph'); // use jquery to get the div
+        
+        // I think a for loop makes more sense here...
+        // you need to use the indexes of the array to access
+        // corresponding values in the categories and values arrays.
+        for (i=0;i<th.categories.length;i++) {
+          var row = $('<div/>').addClass('row');  // make a separate row div for each cat/value pair
+                                                  // and put on it's own row (see css above)
+          $('<div/>')
+            .text(th.categories[i])
+            .attr('class', 'category')
+            .appendTo(row);
+            
+          for (j=0;j<th.values[i];j++) { // loop inside the main loop (with diff indexes) to make the right number of squares for the bars
+            $('<div/>')
+              .attr('class', 'colored')
+              .appendTo(row);
+          }
+          
+          $(row).appendTo(graph); // append row to graph after appending both divs to row
+        }
+        
+      }            
+    
+    }
+        </script>
+    </head>
+    <body>
+        <div class="graph"></div>
+    </body>
+</html>
