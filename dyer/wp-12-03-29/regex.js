@@ -11,6 +11,7 @@ var questionView = {
       this.showQuestion(i);
     }
     $('.next').hide();
+    $('#showAll').remove();
   },
   
   showQuestion: function(qNum,hideOthers) {

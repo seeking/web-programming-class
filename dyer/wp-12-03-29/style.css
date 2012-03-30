@@ -14,6 +14,10 @@ button:hover {
   margin-top: 15px;
 }
 
+.header {
+  text-align: right;
+}
+
 .stats {
   font-style: italic;
 }
