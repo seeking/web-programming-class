@@ -1,0 +1,75 @@
+<html>
+<head>
+  <title>reg ex</title>
+  <style type="text/css">
+    body {
+      font-family: 'Helvetica';  
+    }
+    
+    button {
+      opacity: 0.6;
+    }
+    
+    button:hover {
+      opacity: 1;
+    }
+    
+    #questions {
+      margin-top: 15px  
+    }
+    
+    .stats {
+      font-style: italic;
+    }
+    
+    .num {
+      font-weight: bold;
+      font-size: 16px;
+      float: right;
+    }
+    
+    .question {
+      margin-top: 10px;
+      padding 6px;
+      font-weight: bold;
+      color: maroon;
+      font-size: 26px;
+      text-shadow: 1px 1px 3px #ccc;
+    }
+    
+    .answer {
+      font-size: 18px;  
+    }
+      
+    .answer.fillIn {
+      display: none;
+    }
+    
+    .qa {
+      padding: 5px;
+      margin: 8px;
+      margin-bottom: 100px;
+      border: 1px solid black;
+      
+    }
+    
+    .qa:hover {
+      box-shadow: 1px 1px 5px #ccc;
+    }
+    
+    .qa div {
+      margin: 5px;  
+    }
+    
+    .answer tr td:first {
+      display: none;
+    }
+  </style>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+  <script type="text/javascript" src="http://documentcloud.github.com/underscore/underscore-min.js"></script>
+  <script type="text/javascript" src="regex.js"></script>
+</head>
+<body>
+  <div id='questions'></div>
+</body>
+</html>

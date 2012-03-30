@@ -1,0 +1,14 @@
+
+USING REGEX in JS
+------------------------------
+- creating a RegExp object
+- executing the expression against a string
+- matched groupings
+- replacing matched strings
+
+GETTING DATA FROM THE INTERNET
+------------------------------
+- copy and paste the source code
+- HTTP protocol
+  - send request -> receive response
+  - methods: GET, POST, PUT, DELETE
