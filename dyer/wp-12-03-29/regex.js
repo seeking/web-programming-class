@@ -7,9 +7,10 @@ var questionView = {
   
   showAll: function() {
     $('.qa').remove();
-    for (i=0;i<this.questions.length;i++) {
+    for (i=this.questions.length-1;i>=0;i--) {
       this.showQuestion(i);
     }
+    $('.next').hide();
   },
   
   showQuestion: function(qNum,hideOthers) {
@@ -26,7 +27,7 @@ var questionView = {
     
     $('<div/>').addClass('stats').html(q.studentsMissed+' out of '+q.studentsAnswered+' missed this one. ').appendTo(qa);
     
-    if (qNum < this.questions.length) {
+    if (qNum < this.questions.length-1) {
       _this = this;
       $('<button/>').addClass('next').attr('data-next',parseInt(qNum)+1).text('next question').prependTo(qa).click(function() {
         _this.showQuestion($(this).attr('data-next'));
@@ -90,6 +91,10 @@ $(function() {
     });
     
     questionView.init(questionsStats);
+  });
+  
+  $('#showAll').click(function() {
+    questionView.showAll();
   });
 
 });
