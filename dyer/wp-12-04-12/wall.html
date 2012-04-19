@@ -1,0 +1,123 @@
+<html>
+<head>
+  <title>the wall</title>
+  <style type="text/css">
+
+    body {
+      font-family: Helvetica;
+      padding: 0px;
+      margin: 0px;
+    }
+
+    input, button {
+      padding: 4px;
+      font-size: 16px;
+    }
+
+    #theWall {
+      border-top: 2px solid black;
+      position: fixed;
+      top: 108px;
+      bottom: 0px;
+      width: 100%;
+      overflow: auto;
+    }
+
+    #theWall div {
+      padding: 6px;
+      margin: 6px;
+    }
+
+    #theWall .name {
+      width: 20%;
+      border-bottom: 1px dotted black;
+      font-weight: bold;
+      float: left;
+      text-align: right;
+    }
+
+    #theWall .comment {
+      width: 70%;
+      float: left;
+    }
+
+    #name {
+      width: 17%;
+      text-align: right;
+    }
+
+    #comment {
+      width: 70%;
+    }
+
+    #addComment {
+      width: 5%;
+    }
+
+    #header {
+      background-color: #eee;
+      padding: 4px;
+    }
+
+    #hl {
+      background-color: #feffcb;
+    }
+  </style>
+  <script type="text/javascript" src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js'></script>
+  <script type="text/javascript">
+    wall = [];
+
+    function updateWall(data) {
+      
+        $('#theWall').html('');
+        for (i=0;i<data.length;i++) {
+          var line = $('<div/>').addClass('comment');
+          $('<div/>').addClass('name').text(data[i].name).appendTo(line);
+          $('<div/>').addClass('comment').text(data[i].comment).appendTo(line);
+          line.prependTo('#theWall').addClass('hl');
+        }      
+    }
+
+    $(function() {
+
+      // get the wall from our API
+      $.getJSON("http://localhost:5000/wall",updateWall);
+      
+      // every 2/10 of a second, get an updated wall and refresh the view
+      setInterval(function() {
+        $.getJSON("http://localhost:5000/wall",updateWall);
+      },200);
+
+      
+      $('#name').focus();
+
+      // when the add button is clicked, send an add comment request to our API server
+      $('#addComment').click(function() {
+        $.getJSON("http://localhost:5000/wall",{name: $('#name').val(), comment: $('#comment').val()},updateWall);
+        $('#comment').val('');
+      });
+
+      // if the return key is pressed in the comment field, fire the click event on the add button
+      $('#comment').bind('keydown', function(e) {
+        if (e.which == 13) {
+          $('#addComment').click();
+        }
+      });
+      
+
+    });
+  </script>
+</head>
+
+<body>
+  <div id='header'>
+    <h2>"The Wall"</h2>
+    <div>
+      <input id='name' placeholder='your name'/>
+      <input id='comment' placeholder='your comment'/>
+      <button id='addComment'>add</button>
+    </div>
+  </div>
+  <div id='theWall'></div>
+</body>
+</html>
