@@ -1,9 +1,7 @@
-var wall = [];
 var mostRecentDT = Date.now();
 
 function updateWall(data) {
-  
-    //$('#theWall').html('');
+    var i;
     for (i=0;i<data.length;i++) {
       var line = $('<div/>').addClass('comment');
       $('<div/>').addClass('dt').text(data[i].dt || '').appendTo(line);
@@ -17,12 +15,12 @@ function updateWall(data) {
 $(function() {
 
   // get the wall from our API
-  mostRecentDT = Date.now()
-  $.getJSON("http://localhost:5000/wall",updateWall);
+  $.getJSON("/wall",updateWall);
+  mostRecentDT = Date.now();
   
   // every 2/10 of a second, get an updated wall and refresh the view
   setInterval(function() {
-    $.getJSON("http://localhost:5000/wall",{from: mostRecentDT}, updateWall);
+    $.getJSON("/wall",{from: mostRecentDT}, updateWall);
     mostRecentDT = Date.now();
   },200);
 
@@ -31,7 +29,7 @@ $(function() {
 
   // when the add button is clicked, send an add comment request to our API server
   $('#addComment').click(function() {
-    $.getJSON("http://localhost:5000/wall",{from: mostRecentDT, dt: mostRecentDT = Date.now(), name: $('#name').val(), comment: $('#comment').val()},updateWall);
+    $.getJSON("/wall",{from: mostRecentDT, dt: mostRecentDT = Date.now(), name: $('#name').val(), comment: $('#comment').val()},updateWall);
     $('#comment').val('');
   });
 

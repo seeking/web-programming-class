@@ -1,17 +1,15 @@
 var http = require('http');
 var url = require('url');
 var fs = require('fs');
-var _ = require('./public/underscore');
 
 var wall = [{
   name:'Wall Master',
   comment:'Welcome to the wall'
 }];
 
-http.createServer(function(req,res) {
-  
+var server = http.createServer(function(req,res) {
   var urlObj = url.parse(req.url,true);
-
+  
   var pathArr = urlObj.pathname.split('/');
 
   if (urlObj.pathname == '/') {
@@ -21,7 +19,7 @@ http.createServer(function(req,res) {
       } else res.end(theFile);
     });
   }
-
+  
   if (pathArr[1] == 'public') {
     fs.readFile(__dirname + urlObj.pathname,'utf8',function(err, theFile) {
       if (err) { 
@@ -30,23 +28,14 @@ http.createServer(function(req,res) {
     });
   }
 
-
   if (urlObj.pathname == '/wall') {
     if (urlObj.query.name) {
       wall.push(urlObj.query);
     }
-    if (urlObj.query.from) {
-      var recentWall = _.filter(wall, function(entry) {
-        return entry.dt > urlObj.query.from;
-      });
-      res.end(JSON.stringify(recentWall));
-    } else {
-      res.end(JSON.stringify(wall));
-    }
-    
+    res.end(JSON.stringify(wall));
   }
 
   
-}).listen(process.env.C9_PORT);
+}).listen(process.env.PORT);
 
-console.log('Server running');
+console.log('Server running on process.env.PORT');
