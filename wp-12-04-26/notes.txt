@@ -1,0 +1,7 @@
+
+- updated the client side script to send the date time
+- store most recent update time in a variable
+- instead of retrieving the entire wall for each JSON API call, only get the most recent (from the datetime of the last call)
+
+- separate out the javascript, css and html into separate files
+- on the server side, change the http server to serve all files inside the "public directory"
